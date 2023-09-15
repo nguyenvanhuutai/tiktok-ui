@@ -15,6 +15,10 @@ const publicRoutes = [
     { path: '/upload',      component: Upload, layout: HeaderOnly },
     { path: '/search',      component: Search, layout: null },
 ];
-const priveteRoutes = [];
 
-export { publicRoutes, priveteRoutes };
+
+const privateRoutes = [
+    
+];
+
+export { publicRoutes, privateRoutes };
