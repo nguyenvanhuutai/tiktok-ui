@@ -27,7 +27,22 @@ const cx = classNames.bind(styles);
 const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faEarthAsia}/>,
-        title: 'English'
+        title: 'English',
+        children: {
+            title: 'Language',
+            data: [
+                {   
+                    type: 'language',
+                    code: 'en',
+                    title: 'English'
+                },
+                {
+                    type: 'language',
+                    code: 'vi',
+                    title: 'Tiếng Việt'
+                },
+            ]
+        }
     },
     {
         icon: <FontAwesomeIcon icon={faCircleQuestion}/>,
@@ -41,13 +56,18 @@ const MENU_ITEMS = [
 ]
 
 function Header() {
+
     const [searchResult, setSearchResult] = useState([]);
 
     useEffect(() => {
         setTimeout(() => {
-            setSearchResult([1, 2, 3]);
+            setSearchResult([1]);
         }, 0);
-    });
+    },[]);
+
+    const handleMenuChange = (menuItem) => {
+        console.log(menuItem);
+    }
 
     return (
         <header className={cx('wrapper')}>
@@ -93,6 +113,7 @@ function Header() {
 
                     <Menu 
                         items={MENU_ITEMS}
+                        onChange={handleMenuChange}
                     >
                         <button className={cx('more-btn')}>
                             <FontAwesomeIcon icon={faEllipsisVertical } />
