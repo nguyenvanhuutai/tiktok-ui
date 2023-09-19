@@ -7,13 +7,19 @@ import {
     faMagnifyingGlass,
     faSignIn,
     faEllipsisVertical,
-    faEarthAfrica,
     faEarthAsia,
     faCircleQuestion,
     faKeyboard,
+    faCloudUpload,
+    faUser,
+    faIcons,
+    faGear,
+    faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react/headless';
+import HeadlessTippy from '@tippyjs/react/headless';
+import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css'; // optional
+
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import styles from './Header.module.scss';
@@ -26,48 +32,77 @@ const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
     {
-        icon: <FontAwesomeIcon icon={faEarthAsia}/>,
+        icon: <FontAwesomeIcon icon={faEarthAsia} />,
         title: 'English',
         children: {
             title: 'Language',
             data: [
-                {   
+                {
                     type: 'language',
                     code: 'en',
-                    title: 'English'
+                    title: 'English',
                 },
                 {
                     type: 'language',
                     code: 'vi',
-                    title: 'Tiếng Việt'
+                    title: 'Tiếng Việt',
                 },
-            ]
-        }
+            ],
+        },
     },
     {
-        icon: <FontAwesomeIcon icon={faCircleQuestion}/>,
+        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
         title: 'Feedback and help',
-        to: '/feedback'
+        to: '/feedback',
     },
     {
-        icon: <FontAwesomeIcon icon={faKeyboard}/>,
+        icon: <FontAwesomeIcon icon={faKeyboard} />,
         title: 'Keyboard shortcuts',
     },
-]
+];
 
 function Header() {
-
     const [searchResult, setSearchResult] = useState([]);
+
+    const currentUser = true;
+
 
     useEffect(() => {
         setTimeout(() => {
             setSearchResult([1]);
         }, 0);
-    },[]);
+    }, []);
 
     const handleMenuChange = (menuItem) => {
         console.log(menuItem);
-    }
+    };
+
+    const userMenu = [
+        {
+            icon: <FontAwesomeIcon icon={faUser} />,
+            title: 'View profile',
+            to: '/@hoaa',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faIcons} />,
+            title: 'Get icons',
+            to: '/icon',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faGear } />,
+            title: 'Setting',
+            to: '/feedback',
+        },
+        
+        ...MENU_ITEMS,
+        {
+            icon: <FontAwesomeIcon icon={faSignOut} />,
+            title: 'Logout',
+            to: '/logout',
+            separate: true
+        },
+    ]
+
 
     return (
         <header className={cx('wrapper')}>
@@ -76,7 +111,7 @@ function Header() {
                     <img src={images.logo} alt="tiktok" />
                 </div>
 
-                <Tippy
+                <HeadlessTippy
                     interactive
                     visible={searchResult.length > 0}
                     render={(attrs) => (
@@ -102,22 +137,40 @@ function Header() {
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </button>
                     </div>
-                </Tippy>
+                </HeadlessTippy>
 
                 <div className={cx('actions')}>
-                    <Button text>Upload</Button>
+                    {currentUser ? (
+                        <>
+                            <Tippy delay={[0, 200]} trigger='click' content="Upload video" placement='bottom'>
+                                <button className={cx('action-btn')}>
+                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                </button>
+                            </Tippy>
+                            
+                        </>
+                    ) : (
+                        <>
+                            <Button text>Upload</Button>
 
-                    <Button outline   leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
-                        Log in
-                    </Button>
+                            <Button outline leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
+                                Log in
+                            </Button>
+                        </>
+                    )}
 
-                    <Menu 
-                        items={MENU_ITEMS}
-                        onChange={handleMenuChange}
-                    >
-                        <button className={cx('more-btn')}>
-                            <FontAwesomeIcon icon={faEllipsisVertical } />
-                        </button>
+                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                        {currentUser ? (
+                            <img
+                                className={cx('user-avatar')}
+                                src="https://p16-sign-sg.tiktokcdn.com/aweme/100x100/tos-alisg-avt-0068/88450c0f02bebc8bf27e874428bde122.jpeg?x-expires=1695265200&x-signature=4NXW1aMdZ6TM%2F4SV1PQ%2FwlHQzg8%3D"
+                                alt="Nguyen Van B"
+                            />
+                        ) : (
+                            <button className={cx('more-btn')}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        )}
                     </Menu>
                 </div>
             </div>
