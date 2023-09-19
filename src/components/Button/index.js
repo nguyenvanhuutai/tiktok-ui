@@ -22,19 +22,18 @@ function Button({
     ...passProps
 }) {
     let Comp = 'button';
-
     const props = {
         onClick,
         ...passProps,
     };
 
-    if(disabled){
-        // delete props.onClick;
-        Object.keys(props).forEach(key => {
-            if(key.startsWith('on') && typeof props[key] === 'function'){
+    // Remove event listener when btn is disabled
+    if (disabled) {
+        Object.keys(props).forEach((key) => {
+            if (key.startsWith('on') && typeof props[key] === 'function') {
                 delete props[key];
             }
-        })
+        });
     }
 
     if (to) {
@@ -49,9 +48,9 @@ function Button({
         [className]: className,
         primary,
         outline,
-        rounded,
         text,
         disabled,
+        rounded,
         small,
         large,
     });
