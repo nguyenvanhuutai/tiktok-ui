@@ -1,4 +1,4 @@
-const Routes = {
+const routes = {
     home: '/',
     following: '/following',
     profile: '/@:nickname',
@@ -7,4 +7,4 @@ const Routes = {
 
 }
 
-export default Routes
+export default routes
